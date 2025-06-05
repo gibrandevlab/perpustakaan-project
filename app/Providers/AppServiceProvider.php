@@ -28,10 +28,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
-
-        // Aktivasi aplikasi: redirect ke /activate jika belum aktivasi
-        if (!File::exists(storage_path('activated.key')) && !Request::is('activate*')) {
-            Redirect::to('/activate')->send();
-        }
+        // Hapus penguncian aplikasi, tidak perlu cek file activated.key lagi
+        // if (!File::exists(storage_path('activated.key')) && !Request::is('activate*')) {
+        //     Redirect::to('/activate')->send();
+        // }
     }
 }
