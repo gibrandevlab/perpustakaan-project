@@ -49,10 +49,12 @@
                     <select name="buku_id" id="" class="form-control">
                         <option value=""></option>
                         @forelse ($buku as $item)
-                                <option value="{{ $item->id }}">{{ $item->judul}} ( {{ $item->kode_buku }} ) - {{ $item->status }}</option>
-                            @empty
-                                tidak ada buku yang tersedia
-                            @endforelse
+        <option value="{{ $item->id }}" @if(isset($selected_buku_id) && $selected_buku_id == $item->id) selected @endif>
+            {{ $item->judul}} ( {{ $item->kode_buku }} ) - {{ $item->status }}
+        </option>
+    @empty
+        tidak ada buku yang tersedia
+    @endforelse
                     </select>
                 </div>
 

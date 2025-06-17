@@ -35,13 +35,24 @@ class RiwayatPinjamController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $iduser = Auth::id();
         $profile = Profile::where('users_id',$iduser)->first();
+        $selected_buku_id = $request->query('id_buku');
+
+        // Jika ada id_buku, cek status buku
+        if ($selected_buku_id) {
+            $buku_selected = Buku::find($selected_buku_id);
+            if ($buku_selected && $buku_selected->status !== 'In Stock') {
+                \RealRashid\SweetAlert\Facades\Alert::error('Gagal', 'Buku tidak tersedia untuk dipinjam');
+                return redirect('/buku');
+            }
+        }
+
+        // Ambil semua buku in stock
         $buku = Buku::where('status','In Stock')->get();
         $user = User::all();
-
         if(Auth::user()->isAdmin == 1){
             $peminjam = Profile::where('users_id','>','1')->get();
         }
@@ -49,9 +60,13 @@ class RiwayatPinjamController extends Controller
             $peminjam = $profile;
         }
 
-
-
-        return view('peminjaman.tambah',['profile'=>$profile,'users'=>$user,'buku'=>$buku, 'peminjam'=>$peminjam]);
+        return view('peminjaman.tambah', [
+            'profile'=>$profile,
+            'users'=>$user,
+            'buku'=>$buku,
+            'peminjam'=>$peminjam,
+            'selected_buku_id'=>$selected_buku_id
+        ]);
     }
     /**
      * Store a newly created resource in storage.

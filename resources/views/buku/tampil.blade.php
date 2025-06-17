@@ -72,8 +72,10 @@
                                 <div class="button-area">
                                     <button class="btn-sm btn-info px-2"> <a href="/buku/{{ $item->id }}"
                                     style="text-decoration: none; color:white;">Detail</a></button>
-                                    <button class="btn-sm btn-danger px-4"><a a href="/peminjaman/create"
-                                    style="text-decoration: none; color:white;">Pinjam Buku</a></button>
+                                    <button class="btn-sm btn-danger px-4">
+                                        <a href="/peminjaman/create?id_buku={{ $item->id }}"
+                                        style="text-decoration: none; color:white;">Pinjam Buku</a>
+                                    </button>
                                 </div>
                             @endif
 
